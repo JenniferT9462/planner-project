@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Todo Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="output.css" />
+  </head>
+  <body
+    class="sidebar-open min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-teal-500 text-white font-sans grid grid-cols-1 md:grid-cols-[75px_1fr]"
+  >
+    <button
+      id="menu-btn"
+      class="fixed top-4 left-4 z-20 md:hidden bg-purple-600 text-white p-2 rounded-full shadow-lg"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16m-7 6h7"
+        />
+      </svg>
+    </button>
+
+    <div
+      class="sidebar fixed inset-y-0 left-0 transform -translate-x-full transition-transform ease-in-out duration-300 z-10 md:translate-x-0 md:flex flex-col gap-y-4"
+    >
+      <a
+        href="index.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">🏠</span>
+        <span class="hidden md:block">Home</span>
+      </a>
+      <a
+        href="trackers.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📈</span>
+        <span class="hidden md:block">Trackers</span>
+      </a>
+      <a
+        class="active flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📋</span>
+        <span class="hidden md:block">Lists</span>
+      </a>
+      <a
+        href="journal.html"
+        class="flex flex-col items-center justify-center text-xs text-white hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">✍️</span>
+        <span class="hidden md:block">Journal</span>
+      </a>
+      <a
+        href="entries.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📖</span>
+        <span class="hidden md:block">Entries</span>
+      </a>
+      <a
+        href="timetracker.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">⏱️</span>
+        <span class="hidden md:block text-white">Time</span>
+      </a>
+      <a
+        href="gratAff.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">💕</span>
+        <span class="hidden md:block text-white">Mindful</span>
+      </a>
+    </div>
+
+    <div class="main-content p-5 col-span-full md:col-start-2">
+      <header
+        class="p-6 text-center shadow-lg bg-black/20 backdrop-blur-sm rounded-2xl mb-6"
+      >
+        <h1 class="text-4xl font-bold tracking-wide">✨ Lists ✨</h1>
+        <p class="text-sm text-gray-200">Organize your tasks with style</p>
+      </header>
+
+      <div class="text-center mb-6">
+        <button
+          id="addListBtn"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow-lg transition-transform transform hover:scale-105"
+        >
+          ➕ Add New List
+        </button>
+      </div>
+
+      <main>
+        <div
+          id="listsContainer"
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 gap-y-8 justify-items-center mx-auto"
+        ></div>
+      </main>
+    </div>
+
+    <div
+      id="addListModal"
+      class="fixed inset-0 z-50 overflow-auto bg-transparent flex items-center justify-center transition-opacity duration-300"
+    >
+      <div
+        id="addListContent"
+        class="bg-white/10 backdrop-blur-lg rounded-xl p-8 max-w-lg w-full text-white shadow-xl transform transition-transform duration-300 scale-95 opacity-0"
+      >
+        <h3 class="text-2xl font-bold mb-4 text-center">
+          Create a New List 📝
+        </h3>
+        <div
+          id="addListContent"
+          class="relative transform transition-all ..."
+          tabindex="-1"
+          aria-modal="true"
+          role="dialog"
+        >
+          <form id="newListForm" class="space-y-4">
+            <div>
+              <label for="listName" class="block text-sm font-medium"
+                >List Name</label
+              >
+              <input
+                type="text"
+                id="listName"
+                class="mt-1 block w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="e.g., Groceries, Project Tasks"
+                required
+              />
+            </div>
+            <div>
+              <label for="listType" class="block text-sm font-medium"
+                >List Type</label
+              >
+              <select
+                id="listType"
+                class="mt-1 block w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              >
+                <option value="checklist">Checklist</option>
+                <option value="notes">Note</option>
+              </select>
+            </div>
+            <div>
+              <label for="firstItem" class="block text-sm font-medium"
+                >First Item</label
+              >
+              <input
+                type="text"
+                id="firstItem"
+                class="mt-1 block w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="e.g., Buy milk"
+              />
+            </div>
+            <div class="flex justify-end space-x-4 mt-6">
+              <button
+                type="button"
+                id="cancelBtn"
+                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full transition-transform transform hover:scale-105"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-transform transform hover:scale-105"
+              >
+                Create List
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    
+
+    
+
+    <script src="lists.js"></script>
+  </body>
+</html>

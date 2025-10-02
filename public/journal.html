@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mood Tracker / Daily Journal</title>
+    
+   
+     <link rel="stylesheet" href="output.css">
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-teal-500 text-white font-sans"
+  >
+    <button
+      id="menu-btn"
+      class="fixed top-4 left-4 z-20 md:hidden bg-purple-600 text-white p-2 rounded-full shadow-lg"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16m-7 6h7"
+        />
+      </svg>
+    </button>
+
+    <div
+      class="sidebar fixed inset-y-0 left-0 transform -translate-x-full transition-transform ease-in-out duration-300 z-10 md:translate-x-0 md:flex flex-col gap-y-4"
+    >
+      <a
+        href="index.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">🏠</span>
+        <span class="hidden md:block">Home</span>
+      </a>
+      <a
+        href="trackers.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📈</span>
+        <span class="hidden md:block">Trackers</span>
+      </a>
+      <a
+        href="lists.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📋</span>
+        <span class="hidden md:block">Lists</span>
+      </a>
+      <a
+        class="active flex flex-col items-center justify-center text-xs text-white hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">✍️</span>
+        <span class="hidden md:block">Journal</span>
+      </a>
+      <a
+        href="entries.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📖</span>
+        <span class="hidden md:block">Entries</span>
+      </a>
+      <a
+        href="timetracker.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">⏱️</span>
+        <span class="hidden md:block text-white">Time</span>
+      </a>
+         <a
+        href="gratAff.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">💕</span>
+        <span class="hidden md:block text-white">Mindful</span>
+      </a>
+    </div>
+
+    <div class="main-content flex-grow md:ml-[75px]">
+      <header>
+        <h1 class="text-4xl font-bold tracking-wide">
+          ✨ Mood Tracker & Journal ✨
+        </h1>
+      </header>
+
+      <div class="flex flex-col items-center p-4 md:p-8">
+        <div
+          class="w-full max-w-4xl bg-white p-6 md:p-8 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg"
+        >
+          <div class="calendar-container mb-8">
+            <div class="flex justify-between items-center mb-4">
+              <button
+                id="prev-month"
+                class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-full transition-colors"
+              >
+                &lt;
+              </button>
+              <h2
+                id="current-month-year"
+                class="text-xl md:text-2xl font-semibold text-purple-700"
+              ></h2>
+              <button
+                id="next-month"
+                class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-full transition-colors"
+              >
+                &gt;
+              </button>
+            </div>
+            <div id="calendar" class="w-full"></div>
+          </div>
+
+          <div
+            id="stats-container"
+            class="bg-purple-50 p-6 md:p-8 rounded-xl shadow-inner mb-8"
+          >
+            <h2 class="text-2xl font-semibold text-purple-700 mb-4 text-center">
+              Your Stats
+            </h2>
+            <div class="flex justify-around items-center text-center flex-wrap">
+              <div>
+                <div
+                  id="average-mood"
+                  class="text-3xl font-bold text-purple-600"
+                >
+                  --
+                </div>
+                <div class="text-gray-600 text-sm">Average Mood</div>
+              </div>
+              <div>
+                <div
+                  id="days-tracking"
+                  class="text-3xl font-bold text-purple-600"
+                >
+                  --
+                </div>
+                <div class="text-gray-600 text-sm">Days Tracking</div>
+              </div>
+              <div>
+                <div
+                  id="current-streak"
+                  class="text-3xl font-bold text-purple-600"
+                >
+                  --
+                </div>
+                <div class="text-gray-600 text-sm">Current Streak</div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="entry-form-container bg-purple-50 p-6 md:p-8 rounded-xl shadow-inner"
+          >
+            <h2 class="text-2xl font-semibold text-purple-700 mb-4">
+              New Entry
+            </h2>
+            <div class="mb-3">
+              <label
+                class="block text-gray-700 font-medium mb-2"
+                for="entry-date"
+                >Select Date:</label
+              >
+              <input
+                type="date"
+                id="entry-date"
+                class="w-full p-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-purple-500 transition-colors"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-gray-700 font-medium mb-2"
+                >How are you feeling?</label
+              >
+              <div
+                class="flex justify-center gap-4 flex-wrap"
+                id="mood-options"
+              >
+                <div class="text-center">
+                  <img
+                    src="assets/happy.png"
+                    alt="Happy Emoji"
+                    class="mood-icon"
+                    data-mood="happy"
+                  />
+                  <div class="mt-2">Happy</div>
+                </div>
+                <div class="text-center">
+                  <img
+                    src="assets/excited.png"
+                    alt="Excited Emoji"
+                    class="mood-icon"
+                    data-mood="excited"
+                  />
+                  <div class="mt-2">Excited</div>
+                </div>
+                <div class="text-center">
+                  <img
+                    src="assets/calm.png"
+                    alt="Calm Emoji"
+                    class="mood-icon"
+                    data-mood="calm"
+                  />
+                  <div class="mt-2">Calm</div>
+                </div>
+                <div class="text-center">
+                  <img
+                    src="assets/anxious.png"
+                    alt="Anxious Emoji"
+                    class="mood-icon"
+                    data-mood="anxious"
+                  />
+                  <div class="mt-2">Anxious</div>
+                </div>
+                <div class="text-center">
+                  <img
+                    src="assets/sad.png"
+                    alt="Sad Emoji"
+                    class="mood-icon"
+                    data-mood="sad"
+                  />
+                  <div class="mt-2">Sad</div>
+                </div>
+                <div class="text-center">
+                  <img
+                    src="assets/angry.png"
+                    alt="Angry Emoji"
+                    class="mood-icon"
+                    data-mood="angry"
+                  />
+                  <div class="mt-2">Angry</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label
+                for="journal-entry"
+                class="block text-gray-700 font-medium mb-2"
+                >Journal Entry:
+              </label>
+              <textarea
+                id="journal-entry"
+                class="w-full p-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-purple-500 transition-colors"
+                rows="4"
+                placeholder="Write about your day..."
+              ></textarea>
+            </div>
+
+            <button
+              id="save-entry"
+              class="w-full bg-purple-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:bg-purple-700 transition-colors"
+            >
+              Save Entry
+            </button>
+          </div>
+        </div>
+
+        <div id="message-modal" class="modal hidden">
+          <div class="modal-content">
+            <p id="modal-text" class="text-xl font-semibold mb-4"></p>
+            <button
+              id="modal-close"
+              class="bg-purple-600 text-white font-bold py-2 px-4 rounded-full hover:bg-purple-700 transition-colors"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="journal.js"></script>
+  </body>
+</html>
