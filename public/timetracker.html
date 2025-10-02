@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planner / Time Tracker</title>
+    
+    <link rel="stylesheet" href="output.css" />
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-teal-500 text-white font-sans"
+  >
+  <button
+      id="menu-btn"
+      class="fixed top-4 left-4 z-20 md:hidden bg-purple-600 text-white p-2 rounded-full shadow-lg"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16m-7 6h7"
+        />
+      </svg>
+    </button>
+    <div
+      class="sidebar fixed inset-y-0 left-0 transform -translate-x-full transition-transform ease-in-out duration-300 z-10 md:translate-x-0 md:flex flex-col gap-y-4"
+    >
+      <a
+        href="index.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">🏠</span>
+        <span class="hidden md:block text-white">Home</span>
+      </a>
+      <a
+        href="trackers.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📈</span>
+        <span class="hidden md:block text-white">Trackers</span>
+      </a>
+      <a
+        href="lists.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📋</span>
+        <span class="hidden md:block text-white">Lists</span>
+      </a>
+      <a
+        href="journal.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">✍️</span>
+        <span class="hidden md:block text-white">Journal</span>
+      </a>
+      <a
+        href="entries.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📖</span>
+        <span class="hidden md:block text-white">Entries</span>
+      </a>
+
+      <a
+        class="active flex flex-col items-center justify-center text-xs text-white hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">⏱️</span>
+        <span class="hidden md:block text-white">Time</span>
+      </a>
+         <a
+        href="gratAff.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">💕</span>
+        <span class="hidden md:block text-white">Mindful</span>
+      </a>
+    </div>
+
+    <div class="main-content flex-grow md:ml-[75px] p-4 md:p-8">
+      <header class="text-center mb-8">
+        <h1 class="text-4xl font-bold tracking-wide text-white">
+          ⏱️ Monthly Time Tracker
+        </h1>
+      </header>
+
+      <div
+        class="w-full max-w-4xl mx-auto bg-white/10 backdrop-blur-lg p-6 rounded-xl shadow-lg"
+      >
+        <h2 class="text-2xl font-semibold mb-4 text-purple-200">New Entry</h2>
+        <div
+          id="timeEntryForm"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-purple-900/30 p-4 rounded-lg mb-8"
+        >
+          <input
+            type="date"
+            id="entryDate"
+            class="p-3 rounded-lg border-2 border-gray-300 text-gray-800"
+            value=""
+          />
+
+          <select
+            id="workType"
+            class="p-3 rounded-lg border-2 border-gray-300 text-gray-800"
+          >
+            <option value="" disabled selected>Select Work Type</option>
+            <option value="Class Time">Class Time</option>
+            <option value="Mentoring Time">Mentoring Time</option>
+            <option value="Grading Time">Grading Time</option>
+          </select>
+
+          <input
+            type="number"
+            id="minutesWorked"
+            placeholder="Minutes Worked (e.g., 90)"
+            class="p-3 rounded-lg border-2 border-gray-300 text-gray-800"
+          />
+
+          <input
+            type="text"
+            id="flatServiceName"
+            placeholder="Service Name (Optional)"
+            class="p-3 rounded-lg border-2 border-gray-300 text-gray-800"
+          />
+
+          <input
+            type="number"
+            id="flatRate"
+            placeholder="Flat Rate (Optional, e.g., 500)"
+            class="p-3 rounded-lg border-2 border-gray-300 text-gray-800"
+          />
+
+          <button
+            id="addEntryBtn"
+            class="bg-purple-600 text-white font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:bg-purple-700 transition-colors col-span-full"
+          >
+            Add Entry
+          </button>
+        </div>
+
+        <div
+          id="currentSummary"
+          class="bg-purple-800/50 p-6 rounded-xl shadow-inner mb-8"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-white">
+            Current Month Totals
+          </h2>
+          <p id="totalMinutes" class="text-lg">
+            Total Time: 0 minutes (0.00 hours)
+          </p>
+          <p id="totalPay" class="text-2xl font-bold text-green-300">
+            Total Earned: $0.00
+          </p>
+          <div id="summaryByType" class="mt-4 text-sm"></div>
+        </div>
+
+        <h2 class="text-2xl font-semibold mb-4 text-purple-200">
+          Current Month Entries
+        </h2>
+        <ul id="entriesList" class="space-y-3">
+          <p class="text-gray-400">No entries yet.</p>
+        </ul>
+
+        <h2 class="text-2xl font-semibold mt-10 mb-4 text-purple-200">
+          Archived Months
+        </h2>
+        <div id="archiveContainer" class="space-y-6">
+          <p class="text-gray-400">No archived months yet.</p>
+        </div>
+      </div>
+    </div>
+
+  
+    <script src="timetracker.js"></script>
+  </body>
+</html>
