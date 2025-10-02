@@ -1,0 +1,294 @@
+body {
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(to bottom right, #3b82f6, #8b5cf6, #14b8a6);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+header {
+  margin-top: 2rem;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+}
+
+.sidebar {
+  /* Common styles for all screen sizes */
+  margin: 0;
+  padding: 0;
+  width: 60px; /* Updated width */
+  background-color: #1f2937; 
+  overflow: auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.4); 
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  display: flex; /* Makes the sidebar a flex container */
+  flex-direction: column; /* Stacks icons vertically */
+
+  align-items: center;
+}
+
+/* On medium screens and up, the sidebar is not transformed and the body has a margin to the left */
+@media (min-width: 768px) {
+  .sidebar {
+    transform: none !important;
+  }
+}
+/* Sidebar links */
+/* Sidebar links (Base Styles) */
+.sidebar a {
+  height: 60px;
+  width: 60px;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out; 
+  background-color: transparent; 
+  border-radius: 0.5rem; 
+  color: #fff !important; 
+  position: relative; 
+  z-index: 20; 
+}
+.sidebar a span * {
+    color: white !important; 
+}
+.sidebar a span {
+    color: white !important;
+}
+
+
+
+/* Links on mouse-over - Glow effect */
+.sidebar a:hover {
+  background-color: rgba(107, 33, 168, 0.4) !important; /* Slightly more background fill */
+  /* Use a bright, contrasting color and higher opacity (0.9) */
+  box-shadow: 0 0 8px 2px rgba(223, 136, 226, 0.9) !important; 
+  color: #e1aaea !important; 
+}
+/* Active/current link - Glow effect */
+.sidebar a.active {
+  background-color: rgba(126, 34, 206, 0.6) !important;
+  /* Use the bright color, max opacity (1) and max spread for visual dominance */
+  box-shadow: 0 0 16px 8px rgba(126, 34, 206, 1) !important; 
+  color: #fff !important;
+}
+/* Ensure the active link stays strong even when hovered over */
+.sidebar a.active:hover {
+    background-color: rgba(126, 34, 206, 0.8) !important;
+    box-shadow: 0 0 8px 2px  rgba(223, 136, 226, 0.9) !important; /* White glow for a blinding effect */
+}
+
+/* 🛑 CRITICAL FINAL FIX: Force text visibility and display property. */
+.sidebar a span.hidden {
+    display: block !important; /* Forces it to override the 'hidden' utility on desktop */
+    color: white !important;   /* Forces the color to white */
+    width: 60px !important;    /* Forces it to use the full width */
+    text-align: center !important; /* Centers the text */
+}
+
+/* This is a safety override for the text label that appears on desktop */
+@media (min-width: 768px) {
+    .sidebar a span.hidden.md\:block {
+        display: block !important;
+    }
+}
+
+.mood-icon {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.2s, box-shadow 0.2s;
+  user-select: none;
+}
+
+.mood-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.mood-icon.selected {
+  border: 3px solid #8618ab;
+  box-shadow: 0 0 12px rgba(151, 40, 168, 0.6);
+}
+#moodOptions div {
+  min-width: 80px;
+}
+
+/* Calendar Grid */
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 equal columns */
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* shared styles for headers & day boxes */
+.calendar-header,
+.calendar-day {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(86, 7, 86, 0.1);
+  border: 1px solid #e6e6e6;
+  padding: 8px;
+  min-height: 64px;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+.calendar-day:hover {
+  transform: translateY(-3px);
+}
+/* weekday header (first row) */
+.calendar-header {
+  font-weight: 600;
+  background: #f8f9fa;
+  color: #9811b3;
+  cursor: default;
+}
+
+/* day number top-left inside day box (optional) */
+.day-number {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  font-size: 0.85rem;
+  color: #b655df;
+}
+
+/* empty placeholder */
+.calendar-day.empty {
+  background: #fbfbfd;
+  box-shadow: none;
+  border-style: dashed;
+  cursor: default;
+}
+
+/* small images inside day boxes */
+.calendar-mood-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+/* This rule was added to fix the bug */
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: transparent;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* smaller modal */
+  width: 90%;
+  max-width: 400px;
+}
+
+#entries-container .card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#entries-container .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(86, 7, 86, 0.2);
+}
+
+#newTaskInput,
+#newCareInput {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+  font-size: 16px;
+}
+
+#addTaskButton,
+#addCareButton {
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#addTaskButton:hover,
+#addCareButton:hover {
+  background-color: #45a049;
+}
+
+/* ✅ Shared styles for both lists */
+#checklist,
+#careChecklist {
+  list-style: none;
+  padding: 0;
+}
+
+#checklist li,
+#careChecklist li {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* light divider */
+}
+
+#checklist li:last-child,
+#careChecklist li:last-child {
+  border-bottom: none;
+}
+
+#checklist li input[type="checkbox"],
+#careChecklist li input[type="checkbox"] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+#checklist li span,
+#careChecklist li span {
+  flex-grow: 1;
+  font-size: 18px;
+  color: #7a6767; /* white/gray text */
+}
+
+#checklist li span.completed,
+#careChecklist li span.completed {
+  text-decoration: line-through;
+  color: #e5e7eb; /* Tailwind's gray-200, much brighter */
+  font-style: italic;
+}
+
+ul#checklist li span.completed,
+ul#careChecklist li span.completed {
+  text-decoration: line-through !important;
+  color: #9ca3af !important; /* Tailwind gray-400 */
+}

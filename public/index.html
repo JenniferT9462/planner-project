@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="font-sans p-6 md:p-10 flex justify-center">
+    <div
+      class="bg-transparent rounded-xl shadow-lg w-full max-w-4xl p-6 md:p-8"
+    >
+      <header class="mb-6">
+        <h1 id="welcome-message" class="text-3xl font-bold text-blue-400 mb-1">
+          Hello, User! 👋
+        </h1>
+        <p class="text-gray-400">Here's a quick look at your day.</p>
+      </header>
+
+      <div id="randomGoalSection" class="w-full max-w-2xl mx-auto mb-8 mt-6">
+        <div
+          class="bg-yellow-100 p-6 rounded-xl shadow-2xl border-l-8 border-yellow-500 text-center"
+        >
+          <h3 class="text-xl font-semibold text-yellow-800 mb-3">
+            💡 Your Random Daily Goal
+          </h3>
+          <p
+            id="dailyGoalText"
+            class="text-2xl font-bold text-yellow-900 italic"
+          >
+            Tap to reveal your mission!
+          </p>
+        </div>
+      </div>
+
+      <section class="quick-add mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Quick Actions</h2>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="journal.html"
+            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 ease-in-out"
+          >
+            ✍️ Add Journal Entry
+          </a>
+          <a
+            href="entries.html"
+            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 ease-in-out"
+          >
+            📖 View Journal Entries
+          </a>
+          <a
+            href="trackers.html"
+            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 ease-in-out"
+          >
+            🏃 Add Habit
+          </a>
+          <a
+            href="lists.html"
+            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 ease-in-out"
+          >
+            📝 Add Note
+          </a>
+          <a
+            href="timetracker.html"
+            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 ease-in-out"
+          >
+            ⏱️ Log Hours
+          </a>
+          <a
+            href="gratAff.html"
+            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 ease-in-out"
+          >
+            💕 Gratitude & Affirmations
+        </a>
+        </div>
+      </section>
+
+      <hr class="border-gray-300 mb-6" />
+
+      <section class="tasks-snapshot mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">✅ Daily Tasks</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-lg font-medium text-gray-700 mb-2">Tasks</h3>
+            <div class="mb-3 flex">
+              <input
+                type="text"
+                id="newTaskInput"
+                placeholder="Add a new item..."
+                class="flex-grow border rounded-l px-2 py-1"
+              />
+              <button
+                id="addTaskButton"
+                class="bg-green-500 text-white px-3 rounded-r"
+              >
+                Add
+              </button>
+            </div>
+            <ul id="checklist" class="space-y-2"></ul>
+          </div>
+
+          <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-lg font-medium text-gray-700 mb-3">Self Care</h3>
+            <div class="mb-3 flex">
+              <input
+                type="text"
+                id="newCareInput"
+                placeholder="Add a new item..."
+                class="flex-grow border rounded-l px-2 py-1"
+              />
+              <button
+                id="addCareButton"
+                class="bg-green-500 text-white px-3 rounded-r"
+              >
+                Add
+              </button>
+            </div>
+            <ul id="careChecklist" class="space-y-2"></ul>
+          </div>
+        </div>
+      </section>
+
+      <hr class="border-gray-300 mb-6" />
+
+      <main>
+        <section class="data-snapshot">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">📊 Your Data</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+              id="journal-snapshot"
+              class="bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-200"
+            >
+              <h3 class="text-lg font-medium text-gray-700 mb-2">
+                Journal Entries
+              </h3>
+              <ul
+                id="journal-list"
+                class="space-y-2 text-sm text-gray-600"
+              ></ul>
+            </div>
+            <div
+              id="habits-snapshot"
+              class="bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-200"
+            >
+              <h3 class="text-lg font-medium text-gray-700 mb-2">
+                Habit Tracker
+              </h3>
+              <ul id="habits-list" class="space-y-2 text-sm text-gray-600"></ul>
+            </div>
+            <div
+              id="notes-snapshot"
+              class="bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-200"
+            >
+              <h3 class="text-lg font-medium text-gray-700 mb-2">
+                Lists & Notes
+              </h3>
+              <ul id="notes-list" class="space-y-2 text-sm text-gray-600"></ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="daily-v2.js"></script>
+    <script src="script.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
