@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Journal Entries</title>
+    
+    <link rel="stylesheet" href="output.css" />
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-teal-500 text-white font-sans"
+  >
+    <!-- Sidebar (reuse same as other pages) -->
+    <button
+      id="menu-btn"
+      class="fixed top-4 left-4 z-20 md:hidden bg-purple-600 text-white p-2 rounded-full shadow-lg"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16m-7 6h7"
+        />
+      </svg>
+    </button>
+
+    <div
+      class="sidebar fixed inset-y-0 left-0 transform -translate-x-full transition-transform ease-in-out duration-300 z-10 md:translate-x-0 md:flex flex-col gap-y-4"
+    >
+      <a
+        href="index.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">🏠</span>
+        <span class="hidden md:block">Home</span>
+      </a>
+      <a
+        href="trackers.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📈</span>
+        <span class="hidden md:block">Trackers</span>
+      </a>
+      <a
+        href="lists.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📋</span>
+        <span class="hidden md:block">Lists</span>
+      </a>
+      <a
+        href="journal.html"
+        class="flex flex-col items-center justify-center text-xs text-white hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">✍️</span>
+        <span class="hidden md:block">Journal</span>
+      </a>
+      <a
+        class="active flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">📖</span>
+        <span class="hidden md:block">Entries</span>
+      </a>
+      <a
+        href="timetracker.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">⏱️</span>
+        <span class="hidden md:block text-white">Time</span>
+      </a>
+         <a
+        href="gratAff.html"
+        class="flex flex-col items-center justify-center text-xs text-white/80 hover:bg-purple-700/50"
+      >
+        <span class="text-2xl mb-1">💕</span>
+        <span class="hidden md:block text-white">Mindful</span>
+      </a>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-content flex-grow md:ml-[75px] p-6">
+      <header>
+        <h1 class="text-4xl font-bold tracking-wide text-center">
+          📖 Your Journal Entries
+        </h1>
+      </header>
+
+      <!-- Container for entries -->
+      <div
+        id="entries-container"
+        class="mt-8 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+      ></div>
+    </div>
+
+    <!-- Edit Entry Modal -->
+    <!-- Edit Entry Modal -->
+    <div
+      id="editModal"
+      class="modal  hidden fixed inset-0 bg-white/20 backdrop-blur-md  justify-center items-center z-50"
+    >
+      <div
+        class="bg-white/10 backdrop-blur-lg p-6 rounded-xl shadow-lg w-full max-w-md"
+      >
+        <h2 class="text-2xl font-bold text-purple-700 mb-4 text-center">
+          Edit Journal Entry
+        </h2>
+
+        <label class="block text-gray-700 font-medium mb-1" for="editDate"
+          >Date:</label
+        >
+        <input
+          type="date"
+          id="editDate"
+          class="w-full p-2 mb-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+        />
+
+        <label class="block text-gray-700 font-medium mb-1">Mood:</label>
+        <div id="editMoodOptions" class="flex gap-3 flex-wrap mb-3">
+          <img
+            src="assets/happy.png"
+            data-mood="happy"
+            class="edit-mood-icon w-12 h-12 cursor-pointer rounded-full border-2 border-transparent hover:border-purple-500 active:scale-105 transition-transform duration-150"
+          />
+          <img
+            src="assets/excited.png"
+            data-mood="excited"
+            class="edit-mood-icon w-12 h-12 cursor-pointer rounded-full border-2 border-transparent hover:border-purple-500 active:scale-105 transition-transform duration-150"
+          />
+          <img
+            src="assets/calm.png"
+            data-mood="calm"
+            class="edit-mood-icon w-12 h-12 cursor-pointer rounded-full border-2 border-transparent hover:border-purple-500 active:scale-105 transition-transform duration-150"
+          />
+          <img
+            src="assets/anxious.png"
+            data-mood="anxious"
+            class="edit-mood-icon w-12 h-12 cursor-pointer rounded-full border-2 border-transparent hover:border-purple-500 active:scale-105 transition-transform duration-150"
+          />
+          <img
+            src="assets/sad.png"
+            data-mood="sad"
+            class="edit-mood-icon w-12 h-12 cursor-pointer rounded-full border-2 border-transparent hover:border-purple-500 active:scale-105 transition-transform duration-150"
+          />
+          <img
+            src="assets/angry.png"
+            data-mood="angry"
+            class="edit-mood-icon w-12 h-12 cursor-pointer rounded-full border-2 border-transparent hover:border-purple-500 active:scale-105 transition-transform duration-150"
+          />
+        </div>
+
+        <label class="block text-gray-700 font-medium mb-1" for="editText"
+          >Entry:</label
+        >
+        <textarea
+          id="editText"
+          rows="4"
+          class="w-full p-2 mb-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+        ></textarea>
+
+        <div class="flex justify-end gap-3">
+          <button
+            id="cancelEdit"
+            class="px-4 py-2 rounded-full bg-gray-300 hover:bg-gray-400"
+          >
+            Cancel
+          </button>
+          <button
+            id="saveEdit"
+            class="px-4 py-2 rounded-full bg-purple-600 text-white hover:bg-purple-700"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="entries.js"></script>
+  </body>
+</html>
