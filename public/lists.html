@@ -107,80 +107,66 @@
       </main>
     </div>
 
-    <div
-      id="addListModal"
-      class="fixed inset-0 z-50 overflow-auto bg-transparent flex items-center justify-center transition-opacity duration-300"
-    >
-      <div
-        id="addListContent"
-        class="bg-white/10 backdrop-blur-lg rounded-xl p-8 max-w-lg w-full text-white shadow-xl transform transition-transform duration-300 scale-95 opacity-0"
-      >
-        <h3 class="text-2xl font-bold mb-4 text-center">
-          Create a New List 📝
-        </h3>
-        <div
-          id="addListContent"
-          class="relative transform transition-all ..."
-          tabindex="-1"
-          aria-modal="true"
-          role="dialog"
-        >
-          <form id="newListForm" class="space-y-4">
-            <div>
-              <label for="listName" class="block text-sm font-medium"
-                >List Name</label
-              >
-              <input
-                type="text"
-                id="listName"
-                class="mt-1 block w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g., Groceries, Project Tasks"
-                required
-              />
-            </div>
-            <div>
-              <label for="listType" class="block text-sm font-medium"
-                >List Type</label
-              >
-              <select
-                id="listType"
-                class="mt-1 block w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                required
-              >
-                <option value="checklist">Checklist</option>
-                <option value="notes">Note</option>
-              </select>
-            </div>
-            <div>
-              <label for="firstItem" class="block text-sm font-medium"
-                >First Item</label
-              >
-              <input
-                type="text"
-                id="firstItem"
-                class="mt-1 block w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g., Buy milk"
-              />
-            </div>
-            <div class="flex justify-end space-x-4 mt-6">
-              <button
-                type="button"
-                id="cancelBtn"
-                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full transition-transform transform hover:scale-105"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-transform transform hover:scale-105"
-              >
-                Create List
-              </button>
-            </div>
-          </form>
-        </div>
+   <div
+  id="addListModal"
+  class="hidden opacity-0 fixed inset-0 z-50 overflow-auto bg-transparent items-center justify-center transition-opacity duration-300"
+>
+  <div
+    id="addListContent"
+    class="bg-white/10 backdrop-blur-lg rounded-xl p-8 max-w-lg w-full text-white shadow-xl transform transition-transform duration-300 scale-95 opacity-0"
+  >
+    <h3 class="text-2xl font-bold mb-4 text-center">
+      Create a New List 📝
+    </h3>
+    <form id="newListForm" class="space-y-4">
+      <div>
+        <label for="listName" class="block text-sm font-medium">List Name</label>
+        <input
+          type="text"
+          id="listName"
+          class="mt-1 block w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          placeholder="e.g., Groceries, Project Tasks"
+          required
+        />
       </div>
-    </div>
+      <div>
+        <label for="listType" class="block text-sm font-medium">List Type</label>
+        <select
+          id="listType"
+          class="mt-1 block w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          required
+        >
+          <option value="checklist">Checklist</option>
+          <option value="notes">Note</option>
+        </select>
+      </div>
+      <div>
+        <label for="firstItem" class="block text-sm font-medium">First Item</label>
+        <input
+          type="text"
+          id="firstItem"
+          class="mt-1 block w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          placeholder="e.g., Buy milk"
+        />
+      </div>
+      <div class="flex justify-end space-x-4 mt-6">
+        <button
+          type="button"
+          id="cancelBtn"
+          class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full transition-transform transform hover:scale-105"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-transform transform hover:scale-105"
+        >
+          Create List
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
     
 
