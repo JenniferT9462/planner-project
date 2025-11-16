@@ -62,6 +62,7 @@ const renderSummary = () => {
     summary.totalMinutes
   } minutes (${(summary.totalMinutes / 60).toFixed(2)} hours)`;
   elements.totalPay.textContent = `Total Earned: $${summary.totalPay}`;
+  elements.totalEntries.textContent = `Total Entries: ${summary.totalEntries}`;
 
   let byTypeHtml =
     '<h3 class="font-medium mt-2">By Work Type:</h3><ul class="list-disc pl-6">';
@@ -178,79 +179,72 @@ const updateUI = async () => {
 
 // --- Core Logic Functions ---
 
-const checkAndArchiveMonth = () => {
+const archiveOldEntries = () => {
   const now = new Date();
   const thisMonth = now.getMonth();
   const thisYear = now.getFullYear();
 
-  const currentListDate = new Date(timeTrackerData.archiveYear, currentMonth); // The month being tracked
-  const realCurrentDate = new Date(thisYear, thisMonth); // The month right now
+  const oldEntries = entries.filter((e) => {
+    const d = new Date(e.date);
+    return (
+      d.getFullYear() < thisYear ||
+      (d.getFullYear() === thisYear && d.getMonth() < thisMonth)
+    );
+  });
 
-  if (currentListDate < realCurrentDate) {
-    if (entries.length > 0) {
-      const summary = createSummaryFromEntries(entries);
+  oldEntries.forEach(archiveEntry);
 
-      const newArchiveEntry = {
-        month: currentMonth,
-        year: timeTrackerData.archiveYear,
-        summary,
-        entries: entries,
-      };
+  entries = entries.filter((e) => !oldEntries.includes(e));
 
-      const exists = archive.some(
-        (a) =>
-          a.month === currentMonth && a.year === timeTrackerData.archiveYear
-      );
-      if (!exists) {
-        archive = [...archive, newArchiveEntry];
-      }
-
-      entries = [];
-    }
-
-    currentMonth = thisMonth;
-    timeTrackerData.archiveYear = thisYear;
-  }
+  currentMonth = thisMonth;
+  timeTrackerData.archiveYear = thisYear;
 };
 
-const archiveOldEntry = (entry) => {
-  const entryDate = new Date(entry.date);
-  const month = entryDate.getMonth();
-  const year = entryDate.getFullYear();
+const checkAndArchiveMonth = () => {
+  archiveOldEntries();
+};
+
+const archiveEntry = (entry) => {
+  // Parse entry.date safely
+  const [year, month, day] = entry.date.split("-").map(Number);
+  const entryDate = new Date(year, month - 1, day); // month-1 because JS months are 0-indexed
+  const entryMonth = entryDate.getMonth();
+  const entryYear = entryDate.getFullYear();
+
   const entryTotal = parseFloat(entry.total) || 0;
   const entryMinutes = entry.minutes || 0;
   const workType = entry.workType || "Other";
 
+  // Find or create archived month
   let monthIndex = archive.findIndex(
-    (a) => a.month === month && a.year === year
+    (a) => a.month === entryMonth && a.year === entryYear
   );
 
   if (monthIndex === -1) {
-    const newArchiveEntry = {
-      month: month,
-      year: year,
-      summary: createSummaryFromEntries([]),
+    archive.push({
+      month: entryMonth,
+      year: entryYear,
+      summary: { totalEntries: 0, totalMinutes: 0, totalPay: 0, byType: {} },
       entries: [],
-    };
-    archive.push(newArchiveEntry);
+    });
     monthIndex = archive.length - 1;
   }
+
   const archivedMonth = archive[monthIndex];
 
   archivedMonth.entries.push(entry);
 
-  let summary = archivedMonth.summary;
-
+  // Update summary
+  const summary = archivedMonth.summary;
   summary.totalEntries += 1;
   summary.totalMinutes += entryMinutes;
   summary.totalPay = (parseFloat(summary.totalPay) + entryTotal).toFixed(2);
 
-  // Update byType stats
-  if (!summary.byType[workType]) {
+  if (!summary.byType[workType])
     summary.byType[workType] = { minutes: 0, total: 0 };
-  }
   summary.byType[workType].minutes += entryMinutes;
-  summary.byType[workType].total += entryTotal;
+  summary.byType[workType].total =
+    parseFloat(summary.byType[workType].total) + entryTotal;
 };
 
 const loadData = async () => {
@@ -339,21 +333,17 @@ const addEntry = async () => {
   }
   // --- End Entry Creation Logic ---
 
-  const entryDate = new Date(dateStr);
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const entryDate = new Date(year, month - 1, day);
   const entryMonth = entryDate.getMonth();
   const entryYear = entryDate.getFullYear();
 
-  const currentListMonth = currentMonth;
-  const currentListYear =
-    timeTrackerData.archiveYear || new Date().getFullYear();
-
-  const entryDateObj = new Date(entryYear, entryMonth);
-  const currentListDateObj = new Date(currentListYear, currentListMonth);
-
-  if (entryDateObj < currentListDateObj) {
-    console.log(`Archiving old entry from ${entryDate.toDateString()}`);
-
-    archiveOldEntry(newEntry);
+  const now = new Date();
+  if (
+    entryYear < now.getFullYear() ||
+    (entryYear === now.getFullYear() && entryMonth < now.getMonth())
+  ) {
+    archiveEntry(newEntry);
   } else {
     entries = [newEntry, ...entries];
   }
@@ -361,16 +351,20 @@ const addEntry = async () => {
   await updateUI();
 
   // Reset Form Fields
-  elements.entryDate.value = getLocalISODate(); // Resets date to today
-  elements.workType.value = "";
-  elements.minutesWorked.value = "";
-  elements.flatServiceName.value = "";
-  elements.flatRate.value = "";
+  resetForm();
 };
 
 const deleteEntry = async (id) => {
   entries = entries.filter((entry) => entry.id !== id);
   await updateUI();
+};
+
+const resetForm = () => {
+  elements.entryDate.value = getLocalISODate();
+  elements.workType.value = "";
+  elements.minutesWorked.value = "";
+  elements.flatServiceName.value = "";
+  elements.flatRate.value = "";
 };
 
 // --- Input Toggling Logic ---
@@ -392,6 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
     archiveContainer: document.getElementById("archiveContainer"),
     menuBtn: document.getElementById("menu-btn"),
     sidebar: document.querySelector(".sidebar"),
+    totalEntries: document.getElementById("total-entries"),
   };
   if (elements.menuBtn && elements.sidebar) {
     elements.menuBtn.addEventListener("click", () => {
