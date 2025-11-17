@@ -17,7 +17,7 @@ let habitList = [];
 async function loadHabits() {
   const res = await fetch("/api/habits");
   habitList = await res.json();
-  habitList.forEach(h => {
+  habitList.forEach((h) => {
     console.log("Loaded habit:", h.name, h.trackedDays);
     createCalendarElement(h.name, h.trackedDays);
   });
@@ -26,7 +26,13 @@ async function loadHabits() {
 function createCalendarElement(habitName, trackedDays = []) {
   const calendarId = habitName.toLowerCase().replace(/\s+/g, "-");
   const container = document.createElement("div");
-  container.classList.add("tracker-calendar-container", "shadow-md", "p-4", "bg-white", "rounded-lg");
+  container.classList.add(
+    "tracker-calendar-container",
+    "shadow-md",
+    "p-4",
+    "bg-white",
+    "rounded-lg"
+  );
   container.id = `calendar-${calendarId}`;
 
   container.innerHTML = `
@@ -53,8 +59,10 @@ function createCalendarElement(habitName, trackedDays = []) {
   const deleteBtn = container.querySelector(".deleteCalendar");
   deleteBtn.addEventListener("click", async () => {
     container.remove();
-    await fetch(`/api/habits/${encodeURIComponent(habitName)}`, { method: "DELETE" });
-    habitList = habitList.filter(h => h.name !== habitName);
+    await fetch(`/api/habits/${encodeURIComponent(habitName)}`, {
+      method: "DELETE",
+    });
+    habitList = habitList.filter((h) => h.name !== habitName);
   });
 
   initializeCalendar(container, habitName, trackedDays);
@@ -71,15 +79,15 @@ function initializeCalendar(container, habitName, trackedDays = []) {
   let savedDays = [...trackedDays];
 
   // Save tracked days for this habit
-async function saveTrackedDays() {
-  const response = await fetch("/api/habits", {
-    method: "POST", // your backend already handles create/update
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: habitName, trackedDays: savedDays }),
-  });
-  const result = await response.json();
-  console.log("Saved trackedDays:", savedDays, result);
-}
+  async function saveTrackedDays() {
+    const response = await fetch("/api/habits", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: habitName, trackedDays: savedDays }),
+    });
+    const result = await response.json();
+    console.log("Saved trackedDays:", savedDays, result);
+  }
 
   // Render calendar grid
   function renderCalendar() {
@@ -88,10 +96,13 @@ async function saveTrackedDays() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
-    currentMonthYear.textContent = new Date(year, month).toLocaleString("default", {
-      month: "long",
-      year: "numeric",
-    });
+    currentMonthYear.textContent = new Date(year, month).toLocaleString(
+      "default",
+      {
+        month: "long",
+        year: "numeric",
+      }
+    );
 
     const firstDayOfMonth = new Date(year, month, 1).getDay();
     const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
@@ -101,7 +112,12 @@ async function saveTrackedDays() {
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       const dayDiv = document.createElement("div");
       dayDiv.textContent = lastDayPrevMonth - i;
-      dayDiv.classList.add("text-gray-400", "other-month", "text-center", "p-1");
+      dayDiv.classList.add(
+        "text-gray-400",
+        "other-month",
+        "text-center",
+        "p-1"
+      );
       calendarGrid.appendChild(dayDiv);
     }
 
@@ -109,16 +125,24 @@ async function saveTrackedDays() {
     for (let i = 1; i <= lastDayOfMonth; i++) {
       const dayDiv = document.createElement("div");
       dayDiv.textContent = i;
-      dayDiv.classList.add("current-month", "text-center", "cursor-pointer", "p-1", "rounded");
+      dayDiv.classList.add(
+        "current-month",
+        "text-center",
+        "cursor-pointer",
+        "p-1",
+        "rounded"
+      );
 
       const dateKey = `${year}-${month + 1}-${i}`;
-      if (savedDays.includes(dateKey)) dayDiv.classList.add("bg-purple-500", "text-white");
+      if (savedDays.includes(dateKey))
+        dayDiv.classList.add("bg-purple-500", "text-white");
 
       dayDiv.addEventListener("click", async () => {
         dayDiv.classList.toggle("bg-purple-500");
         dayDiv.classList.toggle("text-white");
 
-        if (savedDays.includes(dateKey)) savedDays = savedDays.filter(d => d !== dateKey);
+        if (savedDays.includes(dateKey))
+          savedDays = savedDays.filter((d) => d !== dateKey);
         else savedDays.push(dateKey);
 
         await saveTrackedDays();
@@ -127,13 +151,17 @@ async function saveTrackedDays() {
       calendarGrid.appendChild(dayDiv);
     }
 
-    // Next month padding to fill 42 cells
     const totalCells = calendarGrid.children.length;
     const remainingCells = 42 - totalCells;
     for (let i = 1; i <= remainingCells; i++) {
       const dayDiv = document.createElement("div");
       dayDiv.textContent = i;
-      dayDiv.classList.add("text-gray-400", "other-month", "text-center", "p-1");
+      dayDiv.classList.add(
+        "text-gray-400",
+        "other-month",
+        "text-center",
+        "p-1"
+      );
       calendarGrid.appendChild(dayDiv);
     }
   }
@@ -173,7 +201,9 @@ saveHabitBtn.addEventListener("click", async (e) => {
 
 // --- Menu Toggle ---
 if (menuBtn && sidebar) {
-  menuBtn.addEventListener("click", () => sidebar.classList.toggle("-translate-x-full"));
+  menuBtn.addEventListener("click", () =>
+    sidebar.classList.toggle("-translate-x-full")
+  );
 }
 
 // --- Load Habits on Page Load ---

@@ -52,7 +52,7 @@ function showModal(message) {
 
 function clearMoodSelection() {
   selectedMood = null;
-  document.querySelectorAll(".mood-icon.selected").forEach(icon => {
+  document.querySelectorAll(".mood-icon.selected").forEach((icon) => {
     icon.classList.remove("selected");
   });
 }
@@ -130,9 +130,9 @@ async function handleEntrySave(e) {
   console.log(`DEBUG: selectedMood is ${selectedMood}`);
 
   if (!selectedMood) return showModal("Please select a mood before saving.");
-    // if (!journalText) return showModal("Please write a journal entry before saving.");
-  if (journalText === "") return showModal("Please write a journal entry before saving.");
 
+  if (journalText === "")
+    return showModal("Please write a journal entry before saving.");
 
   const newEntry = { date: selectedDate, mood: selectedMood, journalText };
   await saveJournalEntry(newEntry);
@@ -150,11 +150,13 @@ function handleCalendarClick(e) {
   DOM.entryDateInput.value = dateStr;
   clearMoodSelection();
 
-  const entry = entries.find(e => e.date === dateStr);
+  const entry = entries.find((e) => e.date === dateStr);
   if (entry) {
     DOM.journalEntry.value = entry.journalText;
     selectedMood = entry.mood;
-    const moodIcon = document.querySelector(`.mood-icon[data-mood="${entry.mood}"]`);
+    const moodIcon = document.querySelector(
+      `.mood-icon[data-mood="${entry.mood}"]`
+    );
     if (moodIcon) moodIcon.classList.add("selected");
   } else {
     DOM.journalEntry.value = "";
@@ -181,7 +183,7 @@ function renderCalendar() {
   const grid = document.createElement("div");
   grid.className = "calendar-grid";
 
-  ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(day => {
+  ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach((day) => {
     const header = document.createElement("div");
     header.className = "calendar-header";
     header.textContent = day;
@@ -195,7 +197,9 @@ function renderCalendar() {
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
-    const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(
+      day
+    ).padStart(2, "0")}`;
     const dayBox = document.createElement("div");
     dayBox.className = "calendar-day";
     dayBox.setAttribute("data-date", dateStr);
@@ -205,7 +209,7 @@ function renderCalendar() {
     num.textContent = day;
     dayBox.appendChild(num);
 
-    const entry = entries.find(e => e.date === dateStr);
+    const entry = entries.find((e) => e.date === dateStr);
     if (entry && MOOD_EMOJIS[entry.mood]) {
       const img = document.createElement("img");
       img.src = MOOD_EMOJIS[entry.mood];
@@ -228,11 +232,14 @@ function updateStats() {
     return;
   }
 
-  const totalMoodValue = entries.reduce((sum, entry) => sum + (MOOD_VALUES[entry.mood] || 0), 0);
+  const totalMoodValue = entries.reduce(
+    (sum, entry) => sum + (MOOD_VALUES[entry.mood] || 0),
+    0
+  );
   DOM.averageMood.textContent = (totalMoodValue / entries.length).toFixed(1);
   DOM.daysTracking.textContent = entries.length;
 
-  const sortedDates = entries.map(e => e.date).sort();
+  const sortedDates = entries.map((e) => e.date).sort();
   let streakCount = 1;
   for (let i = sortedDates.length - 2; i >= 0; i--) {
     const dayBefore = new Date(sortedDates[i]);
@@ -256,14 +263,20 @@ async function initApp() {
   DOM.calendar.addEventListener("click", handleCalendarClick);
   DOM.prevMonthBtn.addEventListener("click", () => handleMonthChange(-1));
   DOM.nextMonthBtn.addEventListener("click", () => handleMonthChange(1));
-  DOM.modalCloseBtn.addEventListener("click", () => DOM.messageModal.classList.add("hidden"));
+  DOM.modalCloseBtn.addEventListener("click", () =>
+    DOM.messageModal.classList.add("hidden")
+  );
 
   if (DOM.menuBtn && DOM.sidebar) {
-    DOM.menuBtn.addEventListener("click", () => DOM.sidebar.classList.toggle("-translate-x-full"));
+    DOM.menuBtn.addEventListener("click", () =>
+      DOM.sidebar.classList.toggle("-translate-x-full")
+    );
   }
 
   const now = new Date();
-  DOM.entryDateInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  DOM.entryDateInput.value = `${now.getFullYear()}-${String(
+    now.getMonth() + 1
+  ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
   await loadEntries(); // load entries and render calendar
 }

@@ -6,11 +6,10 @@ const app = express();
 // --- Configuration for Express ---
 const PORT = 3000;
 
-// THE KEY FIX: We now point 'dataRootPath' directly to the 'public/appData' directory.
-// This assumes 'server.js' is in the root (PLANNER-APP) and the data is in 'PLANNER-APP/public/appData'.
-const dataRootPath = path.join(__dirname, "public", "appData"); 
+// Define the root path for data files
+const dataRootPath = path.join(__dirname, "public", "appData");
 
-// FILE_NAMES is CORRECTLY defined as simple strings
+// FILE_NAMES
 const FILE_NAMES = {
   ENTRIES: "entries.json",
   HABITS: "habitData.json",
@@ -21,22 +20,18 @@ const FILE_NAMES = {
 };
 
 /**
- * Returns the full, correct system path for a data file.
- * NOTE: The 'data' subfolder is now built into dataRootPath, so we don't add it here.
+
  * @param {string} fileName The name of the file (e.g., 'entries.json').
  * @returns {string} The absolute file path.
  */
 function getFilePath(fileName) {
-  // It simply joins the pre-calculated root path ('.../public/appData') with the filename.
   return path.join(dataRootPath, fileName);
 }
 
-/**
- * Ensures the 'public/appData' directory and all necessary JSON files exist, creating them if not.
- */
 function ensureDataFiles() {
   // Check and create the full data directory path: PLANNER-APP/public/appData
-  if (!fs.existsSync(dataRootPath)) fs.mkdirSync(dataRootPath, { recursive: true });
+  if (!fs.existsSync(dataRootPath))
+    fs.mkdirSync(dataRootPath, { recursive: true });
 
   if (!fs.existsSync(getFilePath(FILE_NAMES.ENTRIES)))
     fs.writeFileSync(getFilePath(FILE_NAMES.ENTRIES), "[]");
@@ -63,8 +58,6 @@ ensureDataFiles();
 app.use(express.json());
 // Serves static files from the 'public' folder (PLANNER-APP/public)
 app.use(express.static(path.join(__dirname, "public")));
-
-// --- API Routes (ALL REMAIN THE SAME) ---
 
 //====== Journal Entry ======
 
@@ -96,7 +89,7 @@ app.post("/api/entries", (req, res) => {
   }
 });
 
-// Edit an entry (replace by date) (READ/WRITE)
+// Edit an entry
 app.put("/api/entries/:date", (req, res) => {
   try {
     const filePath = getFilePath(FILE_NAMES.ENTRIES);
@@ -115,7 +108,7 @@ app.put("/api/entries/:date", (req, res) => {
   }
 });
 
-// Delete an entry (by date) (READ/WRITE)
+// Delete an entry
 app.delete("/api/entries/:date", (req, res) => {
   try {
     const filePath = getFilePath(FILE_NAMES.ENTRIES);
@@ -128,8 +121,6 @@ app.delete("/api/entries/:date", (req, res) => {
     res.status(500).send("Error deleting entry.");
   }
 });
-
-
 
 //====== Habit Trackers ======
 
@@ -175,8 +166,6 @@ app.delete("/api/habits/:name", (req, res) => {
   }
 });
 
-
-
 //====== Lists ======
 //GET all lists (READ)
 app.get("/api/lists", (req, res) => {
@@ -202,16 +191,14 @@ app.post("/api/lists", (req, res) => {
   }
 });
 
-
-
 //====== Daily Tasks Routes ======
 
-// Helper function to get today's date in YYYY-MM-DD format
+//function to get today's date in YYYY-MM-DD format
 function getTodayDate() {
   return new Date().toISOString().split("T")[0];
 }
 
-// Helper function to create the default task structure
+//  function to create the default task structure
 function getDefaultTasks() {
   const defaultTasks = [
     { text: "Sweep", completed: false, isDefault: true },
@@ -237,7 +224,7 @@ function getDefaultTasks() {
   ];
 }
 
-// GET all tasks (Final, Robust Version)
+// GET all tasks
 app.get("/api/tasks", (req, res) => {
   const filePath = getFilePath(FILE_NAMES.TASKS);
   let savedData = {}; // Default to empty object
@@ -245,8 +232,7 @@ app.get("/api/tasks", (req, res) => {
   try {
     const fileContent = fs.readFileSync(filePath, "utf8");
 
-    // This safe parsing handles empty or corrupted files
-    if (fileContent.trim() !== '') {
+    if (fileContent.trim() !== "") {
       try {
         savedData = JSON.parse(fileContent);
       } catch (e) {
@@ -255,7 +241,6 @@ app.get("/api/tasks", (req, res) => {
       }
     }
   } catch (err) {
-    // If the file doesn't exist (very rare now), ensure we proceed without crashing
     console.error("Error reading tasks file (file access failure):", err);
   }
 
@@ -263,12 +248,14 @@ app.get("/api/tasks", (req, res) => {
   let tasksToReturn = [];
 
   // The logic to reset tasks if the data is invalid or a new day
-  if (!savedData.lastResetDate || savedData.lastResetDate !== today || !savedData.tasks) {
+  if (
+    !savedData.lastResetDate ||
+    savedData.lastResetDate !== today ||
+    !savedData.tasks
+  ) {
     console.log("Tasks data reset triggered.");
 
     let defaults = getDefaultTasks();
-
-    // NOTE: Your existing logic for carrying over user-added tasks goes here if applicable!
 
     tasksToReturn = defaults;
     const newSaveData = {
@@ -289,7 +276,7 @@ app.get("/api/tasks", (req, res) => {
   res.json(tasksToReturn);
 });
 
-// Save all tasks (replaces existing tasks) (WRITE)
+// Save all tasks
 app.post("/api/tasks", (req, res) => {
   try {
     const filePath = getFilePath(FILE_NAMES.TASKS);
@@ -306,11 +293,9 @@ app.post("/api/tasks", (req, res) => {
   }
 });
 
-
-
 //====== Time Tracker Routes ======
 
-// GET all time tracker data (READ)
+// GET all time tracker data
 app.get("/api/timetracker", (req, res) => {
   try {
     const filePath = getFilePath(FILE_NAMES.TIME_TRACKER);
@@ -329,7 +314,7 @@ app.get("/api/timetracker", (req, res) => {
   }
 });
 
-// Save all time tracker data (replaces existing content) (WRITE)
+// Save all time tracker data
 app.post("/api/timetracker", (req, res) => {
   try {
     const filePath = getFilePath(FILE_NAMES.TIME_TRACKER);
@@ -342,10 +327,8 @@ app.post("/api/timetracker", (req, res) => {
   }
 });
 
-
-
 // ====== Gratitude & Affirmations ======
-// GET all mindful data (Gratitude History and Custom Affirmations) (READ)
+// GET all mindful data
 app.get("/api/mindful", (req, res) => {
   try {
     const filePath = getFilePath(FILE_NAMES.MINDFUL);
@@ -358,7 +341,7 @@ app.get("/api/mindful", (req, res) => {
   }
 });
 
-// Save all mindful data (replaces existing content) (WRITE)
+// Save all mindful data
 app.post("/api/mindful", (req, res) => {
   try {
     const filePath = getFilePath(FILE_NAMES.MINDFUL);
@@ -371,7 +354,6 @@ app.post("/api/mindful", (req, res) => {
     res.status(500).send("Error writing to mindful data file.");
   }
 });
-
 
 // --- Server Start ---
 

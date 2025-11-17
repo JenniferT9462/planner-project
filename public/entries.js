@@ -10,8 +10,6 @@ const MOOD_EMOJIS = {
 
 const container = document.getElementById("entries-container");
 
-
-
 // Modal elements
 const editModal = document.getElementById("editModal");
 const editDate = document.getElementById("editDate");
@@ -21,15 +19,15 @@ const saveEdit = document.getElementById("saveEdit");
 const cancelEdit = document.getElementById("cancelEdit");
 
 let entries = [];
-let editIndex = null; // which entry we’re editing
+let editIndex = null;
 let selectedMood = null;
 
 // Load entries
 async function loadEntries() {
   try {
-    const res = await fetch("/api/entries");   // ✅ correct endpoint
+    const res = await fetch("/api/entries");
     entries = await res.json();
-    renderEntries();                           // ✅ actually displays them
+    renderEntries();
   } catch (err) {
     console.error("Error loading entries:", err);
   }
@@ -76,7 +74,6 @@ function renderEntries() {
 
 // --- Edit Modal Functions ---
 function openEditModal(index) {
-   
   editIndex = index;
   const entry = entries[index];
 
@@ -134,7 +131,7 @@ cancelEdit.addEventListener("click", closeEditModal);
 
 function closeEditModal() {
   editIndex = null;
-  editModal.classList.remove("flex"); 
+  editModal.classList.remove("flex");
   editModal.classList.add("hidden");
 }
 
@@ -144,8 +141,6 @@ async function deleteEntry(index) {
     await loadEntries();
   }
 }
-
-
 
 // renderEntries();
 

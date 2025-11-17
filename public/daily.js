@@ -6,9 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const checklist = document.getElementById("checklist");
   const careChecklist = document.getElementById("careChecklist");
 
-  // --- NEW HELPER FUNCTION ---
-  // This function returns a list of all text names for default tasks.
-  // It MUST match the text strings used in your server.cjs getDefaultTasks() function.
   function getDefaultTaskNames() {
     // Daily Tasks Defaults:
     return [
@@ -61,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --- FIXED getListData FUNCTION ---
+  // --- Helper Functions ---
   function getListData(listElement) {
     const defaultNames = getDefaultTaskNames();
 
@@ -70,18 +67,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const text = li.querySelector("span").textContent;
       const completed = checkbox.checked;
 
-      // 1. Read the attribute first
       let isDefault = li.dataset.default === "true";
 
-      // 2. Robust Check: If the item is marked false/missing the attribute,
-      // but its text matches a known default, correct it to true.
       if (!isDefault && defaultNames.includes(text)) {
         isDefault = true;
-        // Optional: update the DOM attribute for consistency
+
         li.dataset.default = "true";
       }
 
-      // 3. Ensure any non-default task text is always saved as false
       if (!defaultNames.includes(text)) {
         isDefault = false;
       }
@@ -114,16 +107,12 @@ document.addEventListener("DOMContentLoaded", () => {
     listItem.appendChild(checkbox);
     listItem.appendChild(itemText);
 
-    
-    
-  
-   const deleteBtn = document.createElement("button");
-   deleteBtn.textContent = "❌";
-   deleteBtn.classList.add("ml-2");
-   listItem.appendChild(deleteBtn);
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "❌";
+    deleteBtn.classList.add("ml-2");
+    listItem.appendChild(deleteBtn);
 
-    
-   targetList.appendChild(listItem);
+    targetList.appendChild(listItem);
   }
 
   // --- Add task to main list ---
@@ -194,7 +183,6 @@ document.addEventListener("DOMContentLoaded", () => {
     careChecklist.innerHTML = "";
 
     const savedData = await loadData();
-    // savedData is now the list of tasks returned from the backend (already reset if new day)
 
     if (savedData && savedData.length > 0) {
       const tasksList = savedData.find((list) => list.name === "Daily Tasks");
@@ -216,7 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       }
     } else {
-      
       console.warn("No task data received from server. Check server logs.");
     }
 

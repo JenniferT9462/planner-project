@@ -52,8 +52,6 @@ const createSummaryFromEntries = (entriesArr) => {
   };
 };
 
-// --- Form Reset ---
-
 // --- Render Functions ---
 
 const renderSummary = () => {
@@ -105,7 +103,6 @@ const renderEntries = () => {
     })
     .join("");
 
-  // Re-attach listeners for dynamically created buttons
   document.querySelectorAll(".delete-btn").forEach((button) => {
     button.addEventListener("click", (e) =>
       deleteEntry(parseInt(e.target.dataset.id))
@@ -205,7 +202,6 @@ const checkAndArchiveMonth = () => {
 };
 
 const archiveEntry = (entry) => {
-  // Parse entry.date safely
   const [year, month, day] = entry.date.split("-").map(Number);
   const entryDate = new Date(year, month - 1, day); // month-1 because JS months are 0-indexed
   const entryMonth = entryDate.getMonth();
@@ -366,8 +362,6 @@ const resetForm = () => {
   elements.flatServiceName.value = "";
   elements.flatRate.value = "";
 };
-
-// --- Input Toggling Logic ---
 
 // --- Initialization ---
 
